@@ -1,6 +1,6 @@
 import { Like } from '@prisma/client';
-import { LikesRepository } from '../../repositories/likes-repository';
-import { ResourceNotFoundError } from '../errors/resource-not-found-error';
+import { LikesRepository } from '../../repositories/likes-repository.ts';
+import { ResourceNotFoundError } from '../errors/resource-not-found-error.ts';
 
 interface GetLikesByCommentUseCaseRequest {
   commentId: string;

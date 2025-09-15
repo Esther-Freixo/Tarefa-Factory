@@ -1,11 +1,11 @@
 import { Like } from '@prisma/client';
-import { LikesRepository } from '../../repositories/likes-repository';
+import { LikesRepository } from '../../repositories/likes-repository.ts';
 
 interface CreateLikeUseCaseRequest {
   created_at: Date;
   userId: string;
-  postId?: string;
-  commentId?: string;
+  postId?: string | null;
+  commentId?: string | null;
 }
 
 interface CreateLikeUseCaseResponse {
@@ -24,8 +24,8 @@ export class CreateLikesUseCase {
     const like = await this.likesRepository.create({
       created_at,
       userId,
-      postId,
-      commentId,
+      postId: postId ?? null,       
+      commentId: commentId ?? null, 
     });
 
     return { like };

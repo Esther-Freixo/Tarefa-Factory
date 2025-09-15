@@ -5,34 +5,29 @@ import { makeRegisterUseCase } from "../../../use-cases/factories/users/make-reg
 
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
-    const registerBodySchema = z.object({
-        name: z.string(),
-        email: z.string().email(),
-        photo: z.string(),
-        password: z.string().min(6),
-    });
+  const registerBodySchema = z.object({
+    name: z.string(),
+    email: z.string().email(),
+    photo: z.string(),
+    password: z.string().min(6),
+  })
 
-    const {
-        name,
-        email,
-        photo,
-        password,
-    } = registerBodySchema.parse(request.body);
+  const { name, email, photo, password } = registerBodySchema.parse(request.body)
 
-    try {
-        const registerUseCase = makeRegisterUseCase();
-        await registerUseCase.execute({
-            name,
-            email,
-            photo,
-            password,
-        })
-    } catch (error) {
-        if (error instanceof UserAlreadyExists) {
-            return reply.status(409).send({ message: error.message })
-        }
-        throw new Error
+  try {
+    const registerUseCase = makeRegisterUseCase()
+    const { user } = await registerUseCase.execute({
+      name,
+      email,
+      photo,
+      password,
+    })
+
+    return reply.status(201).send({ user })
+  } catch (error) {
+    if (error instanceof UserAlreadyExists) {
+      return reply.status(409).send({ message: error.message })
     }
-
-    return reply.status(201).send('Usuário criado com sucesso');
-};
+    throw error
+  }
+}

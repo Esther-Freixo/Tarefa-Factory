@@ -1,5 +1,5 @@
 import { Post } from '@prisma/client';
-import { PostsRepository } from '../../repositories/posts-repository';
+import { PostsRepository } from '../../repositories/posts-repository.ts';
 
 interface CreatePostsUseCaseRequest {
     title: string,
