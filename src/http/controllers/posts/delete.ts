@@ -1,39 +1,30 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
-import { ResourceNotFoundError } from "../../../errors/resource-not-found-error";
-import { PrismaPostsRepository } from "../../../repositories/prisma/prisma-posts-repository";
-import { DeletePostUseCase } from "../../../use-cases/posts/delete-posts-use-case";
-
+import { ResourceNotFoundError } from "../../../use-cases/errors/resource-not-found-error.ts";
+import { makeDeletePostUseCase } from "../../../use-cases/factories/posts/make-delete-use-case.ts";
 
 export async function deletePost(request: FastifyRequest, reply: FastifyReply) {
-    const getParamsSchema = z.object({
-        postId: z.string().uuid(),
-    });
+  const getParamsSchema = z.object({
+    postId: z.string().uuid(),
+  });
 
-    const { postId } = getParamsSchema.parse(request.params);
-    const userId = request.user.sub;
+  const { postId } = getParamsSchema.parse(request.params);
+  const userId = request.user.sub;
 
-    try {
-        const prismaPostsRepository = new PrismaPostsRepository()
-        const post = await prismaPostsRepository.findById(postId);
+  try {
+    const useCase = makeDeletePostUseCase();
+    await useCase.execute({ postId, userId });
 
-        if (!post) {
-            throw new ResourceNotFoundError();
-        }
-
-        if (post.userId !== userId) {
-            return reply.status(403).send({ message: "Permissão para deletar este post negada." });
-        }
-
-        const deletePostUseCase = new DeletePostUseCase(prismaPostsRepository)
-        await deletePostUseCase.execute({ postId })
-
-        return reply.status(204).send({ post });
-    } catch (error) {
-        if (error instanceof ResourceNotFoundError) {
-            return reply.status(404).send({ message: error.message })
-        }
-        throw new Error
+    return reply.status(204).send();
+  } catch (error) {
+    if (error instanceof ResourceNotFoundError) {
+      return reply.status(404).send({ message: error.message });
     }
 
-};
+    if (error instanceof Error && error.message === "PERMISSION_DENIED") {
+      return reply.status(403).send({ message: "Permissão para deletar este post negada." });
+    }
+
+    throw error;
+  }
+}

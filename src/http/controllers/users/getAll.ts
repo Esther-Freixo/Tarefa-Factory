@@ -1,13 +1,11 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { PrismaUsersRepository } from "../../../repositories/prisma/prisma-users-repository";
-import { ResourceNotFoundError } from "../../../errors/resource-not-found-error";
-import { GetAllUserUseCase } from "../../../use-cases/users/get-all-user-use-case";
+import { ResourceNotFoundError } from "../../../use-cases/errors/resource-not-found-error.ts";
+import { makeGetAllUserUseCase } from "../../../use-cases/factories/users/make-get-all-use-case.ts";
 
 
 export async function getAll(request: FastifyRequest, reply: FastifyReply) {
     try {
-        const prismaUsersRepository = new PrismaUsersRepository()
-        const getUserUseCase = new GetAllUserUseCase(prismaUsersRepository)
+        const getUserUseCase = makeGetAllUserUseCase();
         const user = await getUserUseCase.execute()   
 
         return reply.status(200).send( user );

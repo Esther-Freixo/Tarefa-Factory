@@ -1,11 +1,11 @@
 import { FastifyInstance } from "fastify";
-import { create } from "./create";
-import { verifyJWT } from "../../middleware/verify-jwt";
-import { deleteLike } from "./delete";
-import { getAll } from "./getAll";
-import { getLikesByUser } from "./get-by-userId";
-import { getLikesByPost } from "./get-by-postId";
-import { getLikesByComment } from "./get-by-commentId";
+import { create } from "./create.ts";
+import { verifyJWT } from "../../middleware/verify-jwt.ts";
+import { deleteLike } from "./delete.ts";
+import { getAll } from "./getAll.ts";
+import { getLikesByUser } from "./get-by-userId.ts";
+import { getLikesByPost } from "./get-by-postId.ts";
+import { getLikesByComment } from "./get-by-commentId.ts";
 
 export function likesRoutes(app: FastifyInstance) {
     app.post('/like', { onRequest: [verifyJWT] }, create)

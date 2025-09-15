@@ -1,8 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
-import { PrismaUsersRepository } from "../../../repositories/prisma/prisma-users-repository";
-import { ResourceNotFoundError } from "../../../errors/resource-not-found-error";
-import { UpdateUserUseCase } from "../../../use-cases/users/update-user-use-case";
+import { ResourceNotFoundError } from "use-cases/errors/resource-not-found-error.ts";
+import { makeUpdateUseCase } from "use-cases/factories/users/make-update-use-case.ts";
 
 
 export async function update(request: FastifyRequest, reply: FastifyReply) {
@@ -23,11 +22,10 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
 
 
     try {
-        const prismaUsersRepository = new PrismaUsersRepository()
+        const updateUserUseCase = makeUpdateUseCase();
         if (userId !== userIdAuth) {
             return reply.status(403).send({ message: "Permissão para atualizar este usuário foi negada." });
         }
-        const updateUserUseCase = new UpdateUserUseCase(prismaUsersRepository)
         const user = await updateUserUseCase.execute({
             userId, data: { name, email, photo, password }
         })

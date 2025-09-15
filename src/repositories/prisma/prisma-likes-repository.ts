@@ -1,6 +1,6 @@
-import { prisma } from '../../app';
+import { prisma } from 'lib/prisma/index.ts'
 import { Prisma, Like } from "@prisma/client";
-import { LikesRepository } from '../likes-repository';
+import { LikesRepository } from '../likes-repository.ts';
 
 export class PrismaLikesRepository implements LikesRepository {
   async create(data: Prisma.LikeUncheckedCreateInput): Promise<Like> {

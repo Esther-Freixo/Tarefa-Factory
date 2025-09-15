@@ -1,12 +1,12 @@
 import { FastifyInstance } from "fastify";
-import { createComment } from "./create";
-import { deleteComment } from "./delete";
-import { updateComment } from "./update";
-import { verifyJWT } from "../../middleware/verify-jwt";
-import { getAllComments } from "./getAll";
-import { getCommentById } from "./getById";
-import { getCommentsByUser } from "./getByUserId";
-import { getCommentsByPost } from "./getByPostId";
+import { createComment } from "./create.ts";
+import { deleteComment } from "./delete.ts";
+import { updateComment } from "./update.ts";
+import { verifyJWT } from "../../middleware/verify-jwt.ts";
+import { getAllComments } from "./getAll.ts";
+import { getCommentById } from "./getById.ts";
+import { getCommentsByUser } from "./getByUserId.ts";
+import { getCommentsByPost } from "./getByPostId.ts";
 
 export async function commentsRoutes(app: FastifyInstance) {
 

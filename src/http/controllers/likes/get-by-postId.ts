@@ -1,11 +1,11 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { PrismaLikesRepository } from "../../../repositories/prisma/prisma-likes-repository";
+import { makeGetLikesByPostUseCase } from "../../../use-cases/factories/likes/make-postId-use-case.ts";
 
 export async function getLikesByPost(request: FastifyRequest, reply: FastifyReply) {
   const { postId } = request.params as { postId: string };
 
-  const repo = new PrismaLikesRepository();
-  const likes = await repo.findByPostId(postId);
+  const useCase = makeGetLikesByPostUseCase();
+  const result = await useCase.execute({ postId });
 
-  return reply.status(200).send(likes);
+  return reply.status(200).send(result);
 }

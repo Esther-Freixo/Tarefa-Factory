@@ -1,8 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
-import { PrismaUsersRepository } from "../../../repositories/prisma/prisma-users-repository";
-import { ResourceNotFoundError } from "../../../errors/resource-not-found-error";
-import { GetUserUseCase } from "../../../use-cases/users/get-user-use-case";
+import { ResourceNotFoundError } from "../../../use-cases/errors/resource-not-found-error.ts";
+import { makeGetUserUseCase } from "../../../use-cases/factories/users/make-getById-use-case.ts";
 
 
 export async function get(request: FastifyRequest, reply: FastifyReply) {
@@ -13,8 +12,7 @@ export async function get(request: FastifyRequest, reply: FastifyReply) {
     const { userId } = getParamsSchema.parse(request.params);
   
     try {
-        const prismaUsersRepository = new PrismaUsersRepository()
-        const getUserUseCase = new GetUserUseCase(prismaUsersRepository)
+        const getUserUseCase = makeGetUserUseCase();
         const user = await getUserUseCase.execute({ userId })
 
         return reply.status(200).send( user );

@@ -1,8 +1,8 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
-import { ResourceNotFoundError } from "../../../errors/resource-not-found-error";
-import { PrismaPostsRepository } from "../../../repositories/prisma/prisma-posts-repository";
-import { GetPostByUserIdUseCase } from "../../../use-cases/posts/get-by-userId-user-case";
+import { ResourceNotFoundError } from "../../../use-cases/errors/resource-not-found-error.ts";
+import { PrismaPostsRepository } from "../../../repositories/prisma/prisma-posts-repository.ts";
+import { GetPostByUserIdUseCase } from "../../../use-cases/posts/get-by-userId-user-case.ts";
 
 
 export async function getByUserId(request: FastifyRequest, reply: FastifyReply) {

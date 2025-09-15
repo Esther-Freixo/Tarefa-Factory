@@ -1,6 +1,6 @@
-import { prisma } from '../../app';
+import { prisma } from 'lib/prisma/index.ts'
 import { Prisma } from "@prisma/client";
-import { PostsRepository } from "../posts-repository";
+import { PostsRepository } from "../posts-repository.ts";
 
 export class PrismaPostsRepository implements PostsRepository {
 

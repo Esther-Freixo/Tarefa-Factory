@@ -1,48 +1,40 @@
-import type { FastifyReply, FastifyRequest } from "fastify";
-import z from "zod";
-import { PrismaPostsRepository } from "../../../repositories/prisma/prisma-posts-repository";
-import { ResourceNotFoundError } from "../../../errors/resource-not-found-error";
-import { UpdatePostUseCase } from "../../../use-cases/posts/update-user-use-case";
-
+import type { FastifyRequest, FastifyReply } from "fastify"
+import z from "zod"
+import { makeUpdatePostUseCase } from "../../../use-cases/factories/posts/make-update-use-case.ts"
+import { ResourceNotFoundError } from "../../../use-cases/errors/resource-not-found-error.ts"
 
 export async function update(request: FastifyRequest, reply: FastifyReply) {
-    const updateParamsSchema = z.object({
-        postId: z.string().uuid(),
-    });
+  const paramsSchema = z.object({
+    postId: z.string().uuid(),
+  })
 
-    const updateBodySchema = z.object({
-        title: z.string().optional(),
-        content: z.string().optional(),
+  const bodySchema = z.object({
+    title: z.string().optional(),
+    content: z.string().optional(),
+  })
+
+  const { postId } = paramsSchema.parse(request.params)
+  const { title, content } = bodySchema.parse(request.body)
+  const userId = request.user.sub
+
+  try {
+    const useCase = makeUpdatePostUseCase()
+    const { post } = await useCase.execute({
+      postId,
+      userId,
+      data: { title, content },
     })
-    
-    const userId = request.user.sub;
-    const { postId } = updateParamsSchema.parse(request.params);
-    const { title, content } = updateBodySchema.parse(request.body);
 
-
-    try {
-        const prismapostsRepository = new PrismaPostsRepository()
-        const post = await prismapostsRepository.findById(postId);
-
-        if (!post) {
-            throw new ResourceNotFoundError();
-        }
-
-        if (post.userId !== userId) {
-            return reply.status(403).send({ message: "Permissão para atualizar este post foi negada." });
-        }
-
-        const updatePostUseCase = new UpdatePostUseCase(prismapostsRepository)
-        await updatePostUseCase.execute({
-            postId, data: { title, content }
-        })
-
-        return reply.status(200).send({ post });
-    } catch (error) {
-        if (error instanceof ResourceNotFoundError) {
-            return reply.status(404).send({ message: error.message })
-        }
-        throw new Error
+    return reply.status(200).send(post)
+  } catch (error) {
+    if (error instanceof ResourceNotFoundError) {
+      return reply.status(404).send({ message: error.message })
     }
 
-};
+    if (error instanceof Error && error.message === "PERMISSION_DENIED") {
+      return reply.status(403).send({ message: "Permissão negada." })
+    }
+
+    throw error
+  }
+}

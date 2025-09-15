@@ -1,6 +1,6 @@
-import { prisma } from './../../app';
+import { prisma } from 'lib/prisma/index.ts'
 import { Prisma } from "@prisma/client";
-import { UsersRepository } from "../users-repository";
+import { UsersRepository } from "../users-repository.ts";
 
 export class PrismaUsersRepository implements UsersRepository {
 

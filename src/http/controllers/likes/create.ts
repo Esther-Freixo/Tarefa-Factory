@@ -1,7 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
-import { PrismaLikesRepository } from "../../../repositories/prisma/prisma-likes-repository";
-import { CreateLikesUseCase } from "../../../use-cases/likes/register-like-use-case";
+import { makeCreateLikesUseCase } from "../../../use-cases/factories/likes/make-create-use-case.ts";
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createBodySchema = z.object({
@@ -19,8 +18,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
   const userId = request.user.sub;
 
   try {
-    const prismaLikesRepository = new PrismaLikesRepository();
-    const createLikesUseCase = new CreateLikesUseCase(prismaLikesRepository);
+    const createLikesUseCase = makeCreateLikesUseCase();
 
     await createLikesUseCase.execute({
       created_at,

@@ -1,22 +1,21 @@
 import { Post } from "@prisma/client";
-import { ResourceNotFoundError } from "../../errors/resource-not-found-error";
+import { ResourceNotFoundError } from "../errors/resource-not-found-error";
 import { PostsRepository } from "../../repositories/posts-repository";
 
-
-interface GetpostUseCaseResponse {
-    post: Post[]
+interface GetAllPostsUseCaseResponse {
+  posts: Post[];
 }
 
-export class GetpostUseCase {
-    constructor(private PostsRepository: PostsRepository) { }
+export class GetAllPostsUseCase {
+  constructor(private postsRepository: PostsRepository) {}
 
-    async execute(): Promise<GetpostUseCaseResponse> {
-        const post = await this.PostsRepository.findAllPosts();
-        
-        if(!post){
-            throw new ResourceNotFoundError
-        }
-        
-        return { post };
+  async execute(): Promise<GetAllPostsUseCaseResponse> {
+    const posts = await this.postsRepository.findAllPosts();
+
+    if (!posts || posts.length === 0) {
+      throw new ResourceNotFoundError();
     }
+
+    return { posts };
+  }
 }

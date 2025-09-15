@@ -1,5 +1,5 @@
 import { CommentsRepository } from "../../repositories/comments-repository";
-import { ResourceNotFoundError } from "../../errors/resource-not-found-error";
+import { ResourceNotFoundError } from "../errors/resource-not-found-error";
 
 interface DeleteCommentRequest {
   commentId: string;

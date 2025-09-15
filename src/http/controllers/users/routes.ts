@@ -1,12 +1,12 @@
 import { FastifyInstance } from "fastify";
-import { register } from "./register";
-import { getAll } from "./getAll";
-import { deleteUser } from "./delete";
-import { update } from "./update";
-import { get } from "./get";
-import { verifyJWT } from "../../middleware/verify-jwt";
-import { profile } from "./profile";
-import { authenticate } from "./authenticate";
+import { register } from "./register.ts";
+import { getAll } from "./getAll.ts";
+import { deleteUser } from "./delete.ts";
+import { update } from "./update.ts";
+import { get } from "./get.ts";
+import { verifyJWT } from "../../middleware/verify-jwt.ts";
+import { profile } from "./profile.ts";
+import { authenticate } from "./authenticate.ts";
 
 export function userRoutes(app: FastifyInstance) {
     app.post('/users', register)
