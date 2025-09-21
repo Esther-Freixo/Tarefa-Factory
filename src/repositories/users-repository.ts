@@ -14,4 +14,5 @@ export interface UsersRepository {
     delete(userId: string): Promise<User | null>
     update(id: string, data: UserUpdateInput): Promise<User | null>
     findById(userId: string): Promise<User | null>
+    searchMany(query:string, page: number): Promise<User[] | null>
 }
