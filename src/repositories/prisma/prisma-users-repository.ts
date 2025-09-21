@@ -57,4 +57,16 @@ export class PrismaUsersRepository implements UsersRepository {
         return user; 
     }
     
+    async searchMany(query: string, page:number) {
+        const result = await prisma.user.findMany({
+            where: {
+                name: {
+                    contains: query,
+                    mode: 'insensitive',
+                }
+            }
+        })
+        let filterResult = result.slice((page - 1) * 20, page * 20);
+        return filterResult
+    }
 }
