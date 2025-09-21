@@ -10,6 +10,7 @@ import * as Sentry from '@sentry/node'
 import { nodeProfilingIntegration } from '@sentry/profiling-node'
 import { appRoutes } from 'http/controllers/routes.ts'
 import { messages } from 'constants/messages.ts'
+import cron from 'node-cron'
 
 z.config(z.locales.pt())
 
@@ -33,6 +34,7 @@ if (env.SENTRY_DSN) {
 
 // --- Hooks ---
 import type { FastifyInstance, onRequestAsyncHookHandler } from 'fastify'
+import { sendEmail } from 'utils/send-email.ts'
 
 // ...
 

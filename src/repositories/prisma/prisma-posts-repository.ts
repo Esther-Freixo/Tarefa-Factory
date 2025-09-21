@@ -1,10 +1,8 @@
 import { prisma } from 'lib/prisma/index.ts'
-import { Prisma } from "@prisma/client";
+import { Post, Prisma } from "@prisma/client";
 import { PostsRepository } from "../posts-repository.ts";
 
 export class PrismaPostsRepository implements PostsRepository {
-
-
     async create(data: Prisma.PostUncheckedCreateInput) {
         const posts = await prisma.post.create({ data });
         return posts;
@@ -51,6 +49,5 @@ export class PrismaPostsRepository implements PostsRepository {
             }
         })
         return post;
-
     }
 }

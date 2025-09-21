@@ -13,6 +13,8 @@ export interface UsersRepository {
     findAllUsers(): Promise<User[] | null>
     delete(userId: string): Promise<User | null>
     update(id: string, data: UserUpdateInput): Promise<User | null>
+    updateCred(id: string, data: Prisma.UserUpdateInput): Promise<User>
     findById(userId: string): Promise<User | null>
     searchMany(query:string, page: number): Promise<User[] | null>
+    findBy(where: Prisma.UserWhereUniqueInput): Promise<User | null>
 }

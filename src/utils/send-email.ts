@@ -18,7 +18,7 @@ interface SendEmailRequest {
   subject: string
   message: string
   html: string
-  attachments?: Attachment[]
+attachments?: Attachment[] | undefined
 }
 
 export async function sendEmail({

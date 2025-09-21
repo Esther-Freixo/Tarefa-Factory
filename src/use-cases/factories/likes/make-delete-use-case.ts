@@ -1,5 +1,5 @@
-import { PrismaLikesRepository } from "../../../repositories/prisma/prisma-likes-repository"
-import { DeleteLikeUseCase } from "../../likes/delete-likes-use-case"
+import { PrismaLikesRepository } from "../../../repositories/prisma/prisma-likes-repository.ts"
+import { DeleteLikeUseCase } from "../../likes/delete-likes-use-case.ts"
 
 
 export function makeDeleteLikeUseCase() {

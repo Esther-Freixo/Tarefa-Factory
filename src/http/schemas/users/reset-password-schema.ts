@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { passwordSchema } from '@schemas/utils/password'
+import { passwordSchema } from '../utils/password.ts'
 
 export const resetPasswordSchema = z.object({
   password: passwordSchema,

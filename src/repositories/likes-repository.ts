@@ -1,4 +1,4 @@
-import { Prisma, Like } from "@prisma/client";
+import { Prisma, Like, Post } from "@prisma/client";
 
 export interface LikesRepository {
     create(data: Prisma.LikeUncheckedCreateInput): Promise<Like>;
@@ -8,4 +8,5 @@ export interface LikesRepository {
     findByLikeId(userId: string): Promise<Like[]>;
     findByPostId(postId: string): Promise<Like[]>;
     findByCommentId(commentId: string): Promise<Like[]>;
+    findMostLikedPosts(): Promise<Post[] | null>
 }

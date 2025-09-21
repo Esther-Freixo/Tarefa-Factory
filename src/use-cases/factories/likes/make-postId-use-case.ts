@@ -1,5 +1,5 @@
-import { PrismaLikesRepository } from "../../../repositories/prisma/prisma-likes-repository"
-import { GetLikesByPostUseCase } from "../../likes/get-by-postId-use-case";
+import { PrismaLikesRepository } from "../../../repositories/prisma/prisma-likes-repository.ts"
+import { GetLikesByPostUseCase } from "../../likes/get-by-postId-use-case.ts";
 
 export function makeGetLikesByPostUseCase() {
     const likesRepository = new PrismaLikesRepository();

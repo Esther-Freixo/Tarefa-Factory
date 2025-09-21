@@ -7,6 +7,8 @@ import { get } from "./get.ts";
 import { verifyJWT } from "../../middleware/verify-jwt.ts";
 import { profile } from "./profile.ts";
 import { authenticate } from "./authenticate.ts";
+import { forgotPassword } from "./forgot-password.ts";
+import { resetPassword } from "./reset-password.ts";
 
 export function userRoutes(app: FastifyInstance) {
     app.post('/users', register)
@@ -19,5 +21,8 @@ export function userRoutes(app: FastifyInstance) {
     app.delete('/users/:userId', { onRequest: [verifyJWT] }, deleteUser)
 
     app.patch('/users/:userId',{ onRequest: [verifyJWT] }, update)
+
+    app.post('/forgot-password', forgotPassword)
+    app.patch('/reset-password', resetPassword)
 
 }

@@ -1,5 +1,5 @@
 import { prisma } from 'lib/prisma/index.ts'
-import { Prisma, Like } from "@prisma/client";
+import { Prisma, Like, Post } from "@prisma/client";
 import { LikesRepository } from '../likes-repository.ts';
 
 export class PrismaLikesRepository implements LikesRepository {
@@ -28,11 +28,25 @@ export class PrismaLikesRepository implements LikesRepository {
       where: { postId },
     });
   }
-  
+
   async findByCommentId(commentId: string) {
     return prisma.like.findMany({
       where: { commentId },
     });
   }
-  
+
+  async findMostLikedPosts(): Promise<Post[]> {
+    const topPosts = await prisma.post.findMany({
+      take: 5,
+      orderBy: {
+        like: { _count: 'desc' },
+      },
+      include: {
+        _count: { select: { like: true } },
+      },
+    })
+
+    return topPosts;
+  }
+
 }
