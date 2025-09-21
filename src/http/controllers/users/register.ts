@@ -2,6 +2,7 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 import { UserAlreadyExists } from "../../../use-cases/errors/user-already-exists-error.ts";
 import { makeRegisterUseCase } from "../../../use-cases/factories/users/make-register-use-case.ts";
+import { sendEmail } from "utils/send-email.ts";
 
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {

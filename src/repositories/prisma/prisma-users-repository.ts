@@ -69,4 +69,17 @@ export class PrismaUsersRepository implements UsersRepository {
         let filterResult = result.slice((page - 1) * 20, page * 20);
         return filterResult
     }
+
+    async findBy(where: Prisma.UserWhereUniqueInput) {
+    return await prisma.user.findUnique({
+      where,
+    })
+  }
+
+    async updateCred(id: string, data: Prisma.UserUpdateInput) {
+    return await prisma.user.update({
+      where: { id },
+      data,
+    })
+  }
 }

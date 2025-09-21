@@ -1,3 +1,4 @@
+import { env } from "@env/index.ts"
 
 export function forgotPasswordHtmlTemplate(userName: string, token: string) {
   const url = `${env.FRONTEND_URL}/reset-password/${token}`

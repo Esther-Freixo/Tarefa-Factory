@@ -1,5 +1,5 @@
-import { PrismaLikesRepository } from "../../../repositories/prisma/prisma-likes-repository"
-import { GetlikeUseCase } from "../../likes/get-all-likes-use-case"
+import { PrismaLikesRepository } from "../../../repositories/prisma/prisma-likes-repository.ts"
+import { GetlikeUseCase } from "../../likes/get-all-likes-use-case.ts"
 
 
 export function makeGetLikeUseCase() {
